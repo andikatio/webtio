@@ -297,16 +297,3 @@ def dashboard_view(request):
     }
 
     return render(request, 'dashboard/your_template_name.html', context)
-
-def dashboard_search(request):
-    query = request.GET.get('q')
-    results = []
-
-    if query:
-        results = ArtikelBlog.objects.filter(judul__icontains=query)  # contoh pencarian di field 'judul'
-
-    context = {
-        'query': query,
-        'results': results
-    }
-    return render(request, 'dashboard/search_result.html', context)
