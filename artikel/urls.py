@@ -44,7 +44,4 @@ urlpatterns = [
     path('operator/management-user/edit/<int:user_id>', admin_management_user_edit, name="admin_management_user_edit"),
 
     path('artikel/detail/<int:id>', detail_artikel, name='detail-artikel'),
-
-    ####################### search ############################
-    path('search/', views.dashboard_search, name='dashboard-search'),
 ]
