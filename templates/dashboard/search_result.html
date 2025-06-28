@@ -1,0 +1,17 @@
+{% extends 'dashboard/base.html' %}
+{% block content %}
+<div class="container-fluid py-4">
+  <h4>Hasil Pencarian: "{{ query }}"</h4>
+  {% if results %}
+    <ul class="list-group">
+      {% for artikel in results %}
+        <li class="list-group-item">
+          <a href="{% url 'detail_artikel' artikel.id %}">{{ artikel.judul }}</a>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p class="text-muted">Tidak ada hasil ditemukan.</p>
+  {% endif %}
+</div>
+{% endblock %}

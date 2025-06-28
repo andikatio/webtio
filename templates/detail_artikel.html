@@ -1,0 +1,38 @@
+{% extends 'landingpage/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+
+                {% if artikel.gambar %}
+                <img src="{{ artikel.gambar.url }}" class="card-img-top" alt="{{ artikel.judul }}">
+                {% endif %}
+
+                <div class="card-body">
+                    <h1 class="card-title">{{ artikel.judul }}</h1>
+
+                    <p class="text-muted mb-1">
+                        Ditulis oleh: <strong>{{ artikel.created_by.get_full_name|default:artikel.created_by.username }}</strong>
+                    </p>
+
+                    <p class="text-muted">
+                        Dipublikasikan pada {{ artikel.created_at|date:"j F Y, H:i" }}
+                    </p>
+
+                    <hr>
+
+                    <div class="card-text">
+                        {{ artikel.konten|safe }}
+                    </div>
+
+                    <a href="{% url 'welcome' %}" class="btn btn-secondary mt-3">← Kembali</a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

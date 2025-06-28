@@ -1,0 +1,60 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+{% block css %}
+<style>
+  .django-ckeditor-widget {
+    width: 100%;
+  }
+</style>
+<link href="{% static 'django_ckeditor_5/dist/styles.css' %}" media="all" rel="stylesheet"/>
+<script src="{% static 'django_ckeditor_5/dist/bundle.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+<div class="col-12">
+    <div class="card">
+        <div class="card-header">
+            <h5 class="mb-0">Edit User</h5>
+        </div>
+        <div class="card-body">
+            <form method="POST">
+                {% csrf_token %}
+                <div class="input-group input-group-dynamic mb-4">
+                    <input type="text" value="{{ user.username }}" class="form-control" disabled>
+                </div>
+                <div class="input-group input-group-dynamic mb-4">
+                    <input name="first_name" type="text" value="{{ user.first_name }}" class="form-control" placeholder="masukan nama depan">
+                </div>
+                <div class="input-group input-group-dynamic mb-4">
+                    <input name="last_name" type="text" value="{{ user.last_name }}" class="form-control" placeholder="masukan nama belakang">
+                </div>
+                <br>
+                <div class="input-group input-group-dynamic mb-4">
+                    Is Staff ? &nbsp; <input name="is_staff" type="checkbox" {% if user.is_staff %}checked{% endif %}>
+                </div>
+                <hr>
+
+                <label class="form-label">Daftar Grup</label>
+                {% for group in all_groups %}
+                <div class="form-check">
+                    <input type="checkbox"
+                    class="form-check-input"
+                    id="group_{{ group.id }}"
+                    name="groups"
+                    value="{{ group.id }}"
+                    {% if group.name in group_user %}checked{% endif %}>
+                <label class="form-check-label" for="group_{{ group.id }}">
+                    {{ group.name }}
+                </label>
+                </div>
+                {% endfor %}
+
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-primary">Simpan</button>
+                    <a href="{% url 'admin_management_user_list' %}" class="btn btn-secondary">Kembali KeList</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock content %}

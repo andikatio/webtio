@@ -1,0 +1,64 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+{% block content %}
+<div class="row mt-4">
+    <div class="col-12">
+      <div class="card">
+        <!-- Card header -->
+        <div class="card-header">
+          <h5 class="mb-0">Daftar User Anda</h5>
+        </div>
+        <div class="table-responsive">
+          <table class="table table-flush" id="datatable-search">
+            <thead class="thead-light">
+              <tr>
+                <th>No</th>
+                <th>Username</th>
+                <th>Nama Lengkap</th>
+                <th>Is Staff</th>
+                <th>Groups</th>
+                <th class="text-center">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for user in daftar_user %}
+              <tr>
+                <td class="text-sm font-weight-center">{{ forloop.counter }}</td>
+                <td class="text-sm font-weight-center"><span class="badge badge-success">{{ user.username }}</span></td>
+                <td class="text-sm font-weight-center" style="color:blue">{{ user.first_name|default:"-" }} {{ user.last_name|default:"-" }}</td>
+                <td class="text-sm font-weight-center">
+                  {% if user.is_staff %}
+                  <i class=" btn btn-success btn-sm fas fa-check text-green-500"></i>
+                  {% else %}
+                  <i class="btn btn-danger btn-sm fas fa-times text-red-500"></i>
+                  {% endif %}
+                </td>
+                <td class="text-sm font-weight-center">
+                  {% for group in user.groups.all  %}
+                  <span class="badge badge-dark">{{ group.name }}</span>
+                  {% empty %}
+                  <span class="badge badge-dark">-</span>
+                  {% endfor %}
+                </td>
+                <td class="text-sm font-weight-normal text-center">
+                  <a class="btn btn-warning btn-sm" href="{% url 'admin_management_user_edit' user.id %}">Edit</a>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock content %}
+
+{% block js %}
+<script src="{% static 'dashboard/assets/js/plugins/datatables.js' %}"></script>
+<script>
+    const dataTableSearch = new simpleDatatables.DataTable("#datatable-search", {
+      searchable: true,
+      fixedHeight: true
+    });
+  </script>
+{% endblock %}

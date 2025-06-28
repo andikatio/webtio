@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python/
+env/
+venv/
+myenv/  # <--- TAMBAHKAN INI UNTUK LINGKUNGAN VIRTUAL ANDA
+bin/
+Include/
+lib/
+lib64/
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+
+# Django
+*.log
+*.pot
+*.mo
+*.sqlite3  # <--- HINDARI MENGUPLOAD DATABASE DEVELOPMENT
+local_settings.py # Jika Anda menggunakan file pengaturan lokal
+media/             # <--- JANGAN UPLOAD FILE MEDIA (USER UPLOADED)
+static_root/       # Jika Anda mengumpulkan file statis di sini
+
+# IDEs
+.idea/             # PyCharm / IntelliJ
+.vscode/           # VS Code
+.history/          # VS Code Local History
+*.sublime-project
+*.sublime-workspace
+
+# Operating System files
+.DS_Store
+Thumbs.db

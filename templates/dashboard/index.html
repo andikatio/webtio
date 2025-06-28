@@ -1,0 +1,212 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="row mt-4">
+        <div class="col-lg-4 col-sm-6 mb-4">
+            <div class="card h-100">
+                <div class="card-header pb-0 p-3">
+                    <div class="d-flex justify-content-between">
+                        <h6 class="mb-0">Kategori Artikel</h6>
+                    </div>
+                </div>
+                <div class="card-body pb-0 p-3 mt-4">
+                    {% if categories %}
+                        <div class="row">
+                            <div class="col-7 text-start">
+                                <div class="chart">
+                                    <canvas id="chart-pie" class="chart-canvas" height="200"></canvas>
+                                </div>
+                            </div>
+                            <div class="col-5 my-auto" id="chart-legend-container">
+                                </div>
+                        </div>
+                    {% else %}
+                        <div class="text-center">
+                            <p class="text-sm">Belum ada data kategori untuk ditampilkan.</p>
+                            <i class="material-icons text-lg">pie_chart_outlined</i>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="card-footer pt-0 pb-0 p-3 d-flex align-items-center">
+                    <div class="w-60">
+                        <p class="text-sm">
+                            Statistik jumlah artikel berdasarkan kategori.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-8 col-sm-6">
+             <div class="card">
+                <div class="card-header pb-0 p-3">
+                    <div class="d-flex justify-content-between">
+                        <h6 class="mb-0">Statistik Umum</h6>
+                    </div>
+                </div>
+                <div class="card-body p-3">
+                    <ul class="list-group list-group-flush list my--3">
+                        <li class="list-group-item px-0 border-0">
+                            <div class="row align-items-center">
+                                <div class="col-auto">
+                                    <i class="material-icons text-lg text-dark">article</i>
+                                </div>
+                                <div class="col">
+                                    <p class="text-xs font-weight-bold mb-0">Total Artikel:</p>
+                                    <h6 class="text-sm font-weight-normal mb-0">{{ total_articles }}</h6>
+                                </div>
+                            </div>
+                            <hr class="horizontal dark mt-3 mb-1">
+                        </li>
+                        <li class="list-group-item px-0 border-0">
+                            <div class="row align-items-center">
+                                <div class="col-auto">
+                                   <i class="material-icons text-lg text-dark">category</i>
+                                </div>
+                                <div class="col">
+                                    {% if user.is_staff %}
+                                        <p class="text-xs font-weight-bold mb-0">Total Kategori (Situs):</p>
+                                        <h6 class="text-sm font-weight-normal mb-0">{{ total_categories }}</h6>
+                                    {% else %}
+                                        <p class="text-xs font-weight-bold mb-0">Total Kategori Digunakan:</p>
+                                        <h6 class="text-sm font-weight-normal mb-0">{{ total_categories_used }}</h6>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <hr class="horizontal dark mt-3 mb-1">
+                        </li>
+                        {% if user.is_staff %}
+                        <li class="list-group-item px-0 border-0">
+                            <div class="row align-items-center">
+                                <div class="col-auto">
+                                    <i class="material-icons text-lg text-dark">group</i>
+                                </div>
+                                <div class="col">
+                                    <p class="text-xs font-weight-bold mb-0">Total Pengguna:</p>
+                                    <h6 class="text-sm font-weight-normal mb-0">{{ total_users }}</h6>
+                                </div>
+                            </div>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card mb-4">
+                <div class="card-header pb-0">
+                    <h6>Artikel Terbaru</h6>
+                </div>
+                <div class="card-body px-0 pt-0 pb-2">
+                    <div class="table-responsive p-0">
+                        <table class="table align-items-center mb-0">
+                            <thead>
+                                <tr>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Judul Artikel</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Kategori</th>
+                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Tanggal Publikasi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for article in recent_articles %}
+                                <tr>
+                                    <td>
+                                        <div class="d-flex px-3 py-1">
+                                            <div class="d-flex flex-column justify-content-center">
+                                                <h6 class="mb-0 text-sm">
+                                                    <a href="{% url 'detail_artikel' article.id %}">{{ article.judul }}</a>
+                                                </h6>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <p class="text-sm font-weight-normal mb-0">{{ article.kategori.nama }}</p>
+                                    </td>
+                                    <td class="align-middle text-center text-sm">
+                                        <p class="text-sm font-weight-normal mb-0">{{ article.created_at|date:"d M Y" }}</p>
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="3" class="text-center py-4">
+                                        <p class="text-sm">Belum ada artikel untuk ditampilkan.</p>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+{% block js %}
+{{ category_labels|json_script:"category-labels" }}
+{{ article_counts|json_script:"article-counts" }}
+
+<script>
+document.addEventListener("DOMContentLoaded", function(event) {
+    const pieChartCanvas = document.getElementById('chart-pie');
+
+    // HANYA LANJUT JIKA ELEMEN CANVAS ADA DI HALAMAN INI
+    if (pieChartCanvas) {
+        const labelsJSON = document.getElementById('category-labels')?.textContent || '[]';
+        const dataJSON = document.getElementById('article-counts')?.textContent || '[]';
+        const labels = JSON.parse(labelsJSON);
+        const data = JSON.parse(dataJSON);
+
+        // HANYA GAMBAR CHART JIKA ADA DATA
+        if (labels.length > 0 && data.length > 0) {
+            const colorPalette = ['#17A2B8', '#007BFF', '#344767', '#4CAF50', '#F44336', '#FFC107', '#6C757D'];
+            let backgroundColors = [];
+            for (let i = 0; i < data.length; i++) {
+                backgroundColors.push(colorPalette[i % colorPalette.length]);
+            }
+            
+            const pieChartData = {
+                labels: labels,
+                datasets: [{
+                    label: "Jumlah Artikel",
+                    data: data,
+                    backgroundColor: backgroundColors,
+                    hoverOffset: 4
+                }]
+            };
+
+            const ctxPie = pieChartCanvas.getContext('2d');
+            new Chart(ctxPie, {
+                type: 'pie',
+                data: pieChartData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } }
+                }
+            });
+
+            // MEMBUAT LEGENDA DINAMIS
+            const legendContainer = document.getElementById('chart-legend-container');
+            legendContainer.innerHTML = '';
+            labels.forEach((label, index) => {
+                const color = backgroundColors[index];
+                const legendItemHTML = `
+                    <span class="badge badge-md badge-dot me-4 d-block text-start">
+                        <i style="background-color: ${color};"></i>
+                        <span class="text-dark text-xs">${label}</span>
+                    </span>
+                `;
+                legendContainer.innerHTML += legendItemHTML;
+            });
+        }
+    }
+});
+</script>
+{% endblock js %}

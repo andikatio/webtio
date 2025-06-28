@@ -1,0 +1,56 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+{% block content %}
+<div class="row mt-4">
+    <div class="col-12">
+      <div class="card">
+        <!-- Card header -->
+        <div class="card-header">
+          <h5 class="mb-0" style="padding-right: 15px;">
+            Daftar Artikel Anda
+            <a class="btn btn-outline-warning" href="{% url 'admin_artikel_tambah' %}"> + Tambah</a>
+          </h5>
+        </div>
+        <div class="table-responsive">
+          <table class="table table-flush" id="datatable-search">
+            <thead class="thead-light">
+              <tr>
+                <th>No</th>
+                <th>Judul</th>
+                <th>Kategori</th>
+                <th>Status</th>
+                <th class="text-center">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for artikel in artikel %}
+              <tr>
+                <td class="text-sm font-weight-normal">{{ forloop.counter }}</td>
+                <td class="text-sm font-weight-normal">
+                {{ artikel.judul }} <br/> <span class="badge badge-primary">created by : {{ artikel.created_by }} </span>
+                </td>
+                <td class="text-sm font-weight-normal">{{ artikel.kategori }}</td>
+                <td class="text-sm font-weight-normal">{{ artikel.status }}</td>
+                <td class="text-sm font-weight-normal text-center">
+                  <a class="btn btn-warning btn-sm" href="{% url 'admin_artikel_update' artikel.id %}">Edit</a>
+                  <a class="btn btn-danger btn-sm" onclick="return confirm('yakin ingin delete?')" href="{% url 'admin_artikel_delete' artikel.id %}">Delete</a>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock content %}
+
+{% block js %}
+<script src="{% static 'dashboard/assets/js/plugins/datatables.js' %}"></script>
+<script>
+    const dataTableSearch = new simpleDatatables.DataTable("#datatable-search", {
+      searchable: true,
+      fixedHeight: true
+    });
+  </script>
+{% endblock %}
