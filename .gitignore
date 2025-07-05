@@ -34,3 +34,5 @@ static_root/       # Jika Anda mengumpulkan file statis di sini
 # Operating System files
 .DS_Store
 Thumbs.db
+
+.env
