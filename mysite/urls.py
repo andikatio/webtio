@@ -29,7 +29,6 @@ urlpatterns = [
 
     # URL Dinamis untuk Detail Artikel
     path('artikel/<int:id>/', detail_artikel, name='detail_artikel'),
-
     # URL Dashboard
     path('dashboard/', dashboard, name='dashboard'),
 
@@ -44,6 +43,10 @@ urlpatterns = [
 
     # Menghubungkan ke semua URL dari aplikasi 'artikel'
     path('', include('artikel.urls')),
+
+    # Url Untuk google
+    path('accounts/', include('allauth.urls')),
+
 ]
 
 # Konfigurasi untuk menyajikan file media (gambar) saat development
