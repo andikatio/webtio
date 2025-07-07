@@ -1,7 +1,6 @@
 # artikel/urls.py
 
 from django.urls import path
-from . import views
 from .views import (
     artikel_list,
     artikel_tambah,
@@ -17,7 +16,6 @@ from .views import (
     admin_artikel_delete,
     admin_management_user_list,
     admin_management_user_edit,
-    detail_artikel,
 )
 # Jika Anda ingin menggunakan namespace untuk kerapian (opsional):
 # app_name = 'artikel'
@@ -42,9 +40,4 @@ urlpatterns = [
 
     path('operator/management-user/list', admin_management_user_list, name="admin_management_user_list"),
     path('operator/management-user/edit/<int:user_id>', admin_management_user_edit, name="admin_management_user_edit"),
-
-    path('artikel/detail/<int:id>', detail_artikel, name='detail-artikel'),
-
-    
-    path('artikel/detail/<int:id>', detail_artikel, name='detail-artikel'),
-
+]
