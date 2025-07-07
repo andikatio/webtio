@@ -198,7 +198,7 @@ def admin_artikel_delete(request, id_artikel):
 
 
 def detail_artikel(request, id):
-    template_name = "landingpage/detail.html"
+    template_name = "landingpage/detail_artikel.html"
     try:
         artikel = ArtikelBlog.objects.get(id=id)
     except ArtikelBlog.DoesNotExist:
